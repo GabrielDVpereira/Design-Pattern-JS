@@ -31,22 +31,23 @@ const catModel = {
         "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRg9jAmjW9G6Auy6z-76l9iCYGSDXqnY7PhXCT5XY5go6Vv9vnx&usqp=CAU",
     },
   ],
-  selectedCat: "",
 };
 
 const octopus = {
   selectCat: function (cat) {
-    console.log(cat);
-    catModel.selectedCat = cat;
+    catBoxView.showSelectedCat(cat);
   },
-  catClick: function (cat) {},
+  catClick: function (cat) {
+    cat.count++;
+    catBoxView.render(cat);
+  },
   getAllCats: function () {
     return catModel.cats;
   },
 };
 
 const catListView = {
-  list: document.querySelector(".cat-list ul"),
+  element: document.querySelector(".cat-list ul"),
   createList: function () {
     const cats = octopus.getAllCats();
 
@@ -59,7 +60,7 @@ const catListView = {
       });
 
       catLi.appendChild(catName);
-      this.list.appendChild(catLi);
+      this.element.appendChild(catLi);
     });
   },
   render: function () {
@@ -67,6 +68,26 @@ const catListView = {
   },
 };
 
-const catBoxView = {};
+const catBoxView = {
+  element: document.querySelector(".cat-box"),
+  showSelectedCat: function (cat) {
+    const catName = document.createTextNode(cat.name);
+    const catImage = document.createElement("img");
+    catImage.setAttribute("src", cat.uri);
+
+    catImage.addEventListener("click", function () {
+      octopus.catClick(cat);
+    });
+    const catCount = document.createTextNode(`Count ${cat.count}`);
+
+    this.element.innerHTML = "";
+    this.element.appendChild(catName);
+    this.element.appendChild(catImage);
+    this.element.appendChild(catCount);
+  },
+  render: function (cat) {
+    this.showSelectedCat(cat);
+  },
+};
 
 catListView.render();
