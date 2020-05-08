@@ -44,6 +44,12 @@ const octopus = {
   getAllCats: function () {
     return catModel.cats;
   },
+  renderAdminView: function (cat) {
+    console.log(`This is ${cat.name} admin view!`);
+  },
+  openAdmin: function () {},
+  saveAdminChanges: function () {},
+  cancelAdminChanges: function () {},
 };
 
 const catListView = {
@@ -73,18 +79,26 @@ const catBoxView = {
   showSelectedCat: function (cat) {
     const catName = document.createTextNode(cat.name);
     const catImage = document.createElement("img");
+    const adminButton = document.createElement("button");
+    adminButton.setAttribute("name", "admin");
     catImage.setAttribute("src", cat.uri);
 
     catImage.addEventListener("click", function () {
       octopus.catClick(cat);
     });
+    adminButton.addEventListener("click", function () {
+      octopus.renderAdminView(cat);
+    });
+
     const catCount = document.createTextNode(`Count ${cat.count}`);
 
     this.element.innerHTML = "";
     this.element.appendChild(catName);
     this.element.appendChild(catImage);
     this.element.appendChild(catCount);
+    this.element.appendChild(adminButton);
   },
+
   render: function (cat) {
     this.showSelectedCat(cat);
   },
