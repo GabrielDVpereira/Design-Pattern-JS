@@ -52,10 +52,10 @@ const octopus = {
 
   saveAdminChanges: function (id, newCat) {
     const catToEditIndex = catModel.cats.map((cat) => cat.id).indexOf(id);
-    catModel[catToEditIndex] = { id, ...newCat };
-    catBoxView.render(catModel[catToEditIndex]);
+    catModel.cats[catToEditIndex] = { id, ...newCat };
+    catBoxView.render(catModel.cats[catToEditIndex]);
     catBoxView.closeAdminView();
-    // catListView.render();
+    catListView.render();
   },
   cancelAdminChanges: function () {},
 };
@@ -63,8 +63,8 @@ const octopus = {
 const catListView = {
   element: document.querySelector(".cat-list ul"),
   createList: function () {
+    this.element.innerHTML = "";
     const cats = octopus.getAllCats();
-
     cats.forEach((cat) => {
       const catLi = document.createElement("li");
       const catName = document.createTextNode(cat.name);
